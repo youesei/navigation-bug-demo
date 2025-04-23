@@ -1,6 +1,6 @@
 // App.tsx
 import * as React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import { CommonActions, NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Button, View, Text } from 'react-native';
@@ -9,12 +9,25 @@ const Drawer = createDrawerNavigator();
 const StackOne = createNativeStackNavigator();
 const StackTwo = createNativeStackNavigator();
 
-const ScreenA = ({ navigation }) => (
-  <View>
-    <Text>Screen A</Text>
-    <Button title="Go to Screen C as soon as you start the app" onPress={() => navigation.navigate('StackTwo', { screen: 'ScreenC' })} />
-  </View>
-);
+const ScreenA = ({ navigation }) => {
+  const handleNavigation = () => {
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 1,
+        routes: [
+          { name: 'StackTwo', params: { screen: 'ScreenB' } },
+          { name: 'StackTwo', params: { screen: 'ScreenC' } },
+        ],
+      })
+    );
+  }
+  return (
+    <View>
+      <Text>Screen A</Text>
+      <Button title="Go to Screen C as soon as you start the app" onPress={() => handleNavigation()} />
+    </View>
+  )
+}
 
 const ScreenB = ({ navigation }) => (
   <View>
